@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Trucks</title>
+</head>
+<body>
+    <div class="food-truck-container"></div>
+    <script>
+        async function getFoodTrucks(){
+            try{
+                const response = await fetch('/api/foodTrucks')
+                const data = await response.json()
+                const container = document.querySelector(".food-truck-container")
+                container.innerHTML = ""
+                data.map(truck =>{
+                    const truckCard = document.createElement("div")
+                    truckCard.style.border = '1px solid #ccc'
+                    truckCard.style.padding = '10px'
+                    truckCard.style.margin = '10px'
+                    truckCard.style.borderRadius = '8px'
+
+                    truckCard.innerHTML = `
+                        <h3>${truck.name}</h3>
+                        <p><strong>Cuisine:</strong> ${truck.cuisine}</p>
+                        <p><strong>Location:</strong> ${truck.location}</p>
+                        <p><strong>Rating:</strong> ${truck.rating}</p>
+                        <p><strong>Status:</strong> ${truck.is_open ? "Open" : "Closed"}</p>
+                    `
+                    container.appendChild(truckCard)
+                })
+            }catch(error){
+                console.log("Error: ", error)
+            }
+        }
+        getFoodTrucks()
+    </script>
+</body>
+</html>
